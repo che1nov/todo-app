@@ -1,4 +1,4 @@
-package todo_app
+package models
 
 type User struct {
 	Id       int    `json:"-" db:"id"`

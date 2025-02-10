@@ -2,22 +2,24 @@ package main
 
 import (
 	"context"
-	todo_app "github.com/che1nov/todo-app"
-	"github.com/che1nov/todo-app/pkg/handler"
-	"github.com/che1nov/todo-app/pkg/repository"
-	"github.com/che1nov/todo-app/pkg/service"
+	"github.com/che1nov/todo-app/internal/handlers"
+	"github.com/che1nov/todo-app/internal/repository"
+	"github.com/che1nov/todo-app/internal/server"
+	"github.com/che1nov/todo-app/internal/service"
+
 	"github.com/joho/godotenv"
-	_ "github.com/lib/pq"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 	"os"
 	"os/signal"
 	"syscall"
+
+	_ "github.com/lib/pq"
 )
 
 func main() {
 	if err := initConfig(); err != nil {
-		logrus.Fatalf("ошибка инициализации параметров: %s", err.Error())
+		logrus.Fatalf("ошибка инициализации конфигурации: %s", err.Error())
 	}
 
 	if err := godotenv.Load(); err != nil {
@@ -38,26 +40,26 @@ func main() {
 
 	repos := repository.NewRepository(db)
 	services := service.NewService(repos)
-	handlers := handler.NewHandler(services)
+	handlers := handlers.NewHandler(services)
 
-	srv := new(todo_app.Server)
+	srv := new(server.Server)
 	go func() {
-		if err = srv.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {
+		if err := srv.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {
 			logrus.Fatalf("ошибка при запуске http-сервера: %s", err.Error())
 		}
 	}()
-	logrus.Print("TodoApp запущено")
+	logrus.Print("GeoService запущен")
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
 	<-quit
 
-	logrus.Print("Всё!")
+	logrus.Print("завершение работы сервера...")
 	if err := srv.Shutdown(context.Background()); err != nil {
-		logrus.Errorf("ошибка завершения работы сервера", err.Error())
+		logrus.Errorf("ошибка завершения работы сервера: %s", err.Error())
 	}
 	if err := db.Close(); err != nil {
-		logrus.Errorf("Упс!")
+		logrus.Errorf("ошибка при закрытии базы данных: %s", err.Error())
 	}
 }
 

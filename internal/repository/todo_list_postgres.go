@@ -2,7 +2,7 @@ package repository
 
 import (
 	"fmt"
-	todo_app "github.com/che1nov/todo-app"
+	todo_app "github.com/che1nov/todo-app/internal/models"
 	"github.com/jmoiron/sqlx"
 	"github.com/sirupsen/logrus"
 

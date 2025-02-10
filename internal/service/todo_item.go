@@ -1,8 +1,8 @@
 package service
 
 import (
-	todo_app "github.com/che1nov/todo-app"
-	"github.com/che1nov/todo-app/pkg/repository"
+	todo_app "github.com/che1nov/todo-app/internal/models"
+	"github.com/che1nov/todo-app/internal/repository"
 )
 
 type TodoItemService struct {

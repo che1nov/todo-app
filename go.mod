@@ -1,6 +1,6 @@
 module github.com/che1nov/todo-app
 
-go 1.23.5
+go 1.20
 
 require (
 	github.com/gin-gonic/gin v1.10.0
@@ -21,6 +21,7 @@ require (
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator/v10 v10.20.0 // indirect
 	github.com/goccy/go-json v0.10.2 // indirect
+	github.com/golang/mock v1.6.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/jmoiron/sqlx v1.4.0 // indirect
 	github.com/joho/godotenv v1.5.1 // indirect
