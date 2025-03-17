@@ -3,16 +3,13 @@ version: '3.8'
 services:
   todo-app:
     build: ./
-    command: ./wait-for-postgres.sh ./todo-app
+    command: ./wait-for-postgres.sh db ./todo-app
     ports:
-      - 8080:8080
+      - 8000:8000
     depends_on:
       - db
     environment:
-      - DB_HOST=db
-      - DB_USER=postgres
       - DB_PASSWORD=qwerty
-      - DB_NAME=mydatabase
 
   db:
     restart: always
@@ -20,8 +17,6 @@ services:
     volumes:
       - ./.database/postgres/data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=qwerty
-      - POSTGRES_DB=mydatabase
     ports:
-      - 5432:5432
+      - 5436:5432
